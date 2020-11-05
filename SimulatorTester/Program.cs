@@ -11,19 +11,19 @@ namespace SimulatorTester
     {
         private static void Main(string[] args)
         {
-            var sw = Stopwatch.StartNew();
-            Thread.Sleep(TimeSpan.FromTicks(1));
-            var ticks = sw.ElapsedTicks;
-            var microseconds = ticks / (Stopwatch.Frequency / (1000d * 1000d));
-            var nanoseconds = ticks / (Stopwatch.Frequency / (1000d * 1000d * 1000d));
+            // var sw = Stopwatch.StartNew();
+            // Thread.Sleep(TimeSpan.FromTicks(1));
+            // var ticks = sw.ElapsedTicks;
+            // var microseconds = ticks / (Stopwatch.Frequency / (1000d * 1000d));
+            // var nanoseconds = ticks / (Stopwatch.Frequency / (1000d * 1000d * 1000d));
 
-            Console.WriteLine("Frequency: {0} ticks/s", Stopwatch.Frequency);
-            Console.WriteLine("Frequency: {0} ticks/ms", Stopwatch.Frequency / 1000d);
-            Console.WriteLine("Frequency: {0} ticks/us", Stopwatch.Frequency / 1000d / 1000d);
-            Console.WriteLine("Frequency: {0} ticks/ns", Stopwatch.Frequency / 1000d / 1000d / 1000d);
-            Console.WriteLine("Microseconds: {0}", microseconds);
-            Console.WriteLine("Nanoseconds: {0}", nanoseconds);
-            Console.WriteLine("Ticks: {0}", ticks);
+            // Console.WriteLine("Frequency: {0} ticks/s", Stopwatch.Frequency);
+            // Console.WriteLine("Frequency: {0} ticks/ms", Stopwatch.Frequency / 1000d);
+            // Console.WriteLine("Frequency: {0} ticks/us", Stopwatch.Frequency / 1000d / 1000d);
+            // Console.WriteLine("Frequency: {0} ticks/ns", Stopwatch.Frequency / 1000d / 1000d / 1000d);
+            // Console.WriteLine("Microseconds: {0}", microseconds);
+            // Console.WriteLine("Nanoseconds: {0}", nanoseconds);
+            // Console.WriteLine("Ticks: {0}", ticks);
 
 
             var clock = new Clock(0, 100);
@@ -51,14 +51,8 @@ namespace SimulatorTester
             var tso = new ParameterizedThreadStart(o => Simulator.Simulate((CancellationToken) o));
             var thread = new Thread(tso) {Priority = ThreadPriority.Highest};
             thread.Start(cancellationTokenSource.Token);
-            var i = 0;
-            
-            while (i < 10)
-            {
-                Console.WriteLine("LED: {0}", lamp.Inputs[0]);
-                Thread.Sleep(100);
-                i++;
-            }
+
+            Thread.Sleep(1000);
 
             cancellationTokenSource.Cancel();
             thread.Join();
