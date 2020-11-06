@@ -66,7 +66,7 @@ namespace DigitalLogicSimulator
 
             foreach (var clock in Clocks)
             {
-                var task = Task.Run(() => SimulateClock(clock, cancellationToken));
+                var task = Task.Factory.StartNew(() => SimulateClock(clock, cancellationToken), TaskCreationOptions.LongRunning);
                 ClockTasks.Add(task);
                 TasksByClock.Add(clock.ID, new List<Task>());
             }

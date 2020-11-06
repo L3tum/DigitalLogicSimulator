@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Drawing.Drawing2D;
 using System.Threading;
+using System.Threading.Tasks;
 using DigitalLogicSimulator;
 using DigitalLogicSimulator.Nodes;
 
@@ -46,16 +45,15 @@ namespace SimulatorTester
             Simulator.CollectClocks();
 
             Sampler.Configure(100, false);
-            
+
             var cancellationTokenSource = new CancellationTokenSource();
-            var tso = new ParameterizedThreadStart(o => Simulator.Simulate((CancellationToken) o));
-            var thread = new Thread(tso) {Priority = ThreadPriority.Highest};
-            thread.Start(cancellationTokenSource.Token);
+            var task = Task.Factory.StartNew(() => Simulator.Simulate(cancellationTokenSource.Token),
+                TaskCreationOptions.LongRunning);
 
             Thread.Sleep(1000);
 
             cancellationTokenSource.Cancel();
-            thread.Join();
+            task.Wait(1000);
 
             Console.WriteLine("Stop {0}", Sampler.Samples.Count);
             Console.WriteLine();
